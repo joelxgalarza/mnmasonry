@@ -1,44 +1,41 @@
-M&N MASONRY - STATIC SITE
-=========================
+M&N MASONRY - CLOUDFLARE WORKERS DEPLOY
+=======================================
 
-PREVIEW LOCALLY
-Double-click index.html. All paths are relative, so images and links work
-straight from the folder with no server needed. The embedded GoHighLevel
-form needs an internet connection to load.
+Everything served to the public lives in public/. Nothing else in this repo is
+uploaded. That is deliberate: the assets directory used to be the repo root,
+which meant wrangler was uploading .git as public files.
 
 DEPLOY
-1. Drag this whole folder into Cloudflare Pages or Netlify.
-2. Point mandnmasonryct.com at it from Porkbun DNS.
-3. Turn on "force HTTPS".
-4. 404.html is picked up automatically by both hosts.
-5. Submit https://mandnmasonryct.com/sitemap.xml in Google Search Console.
+  npx wrangler deploy
+The Cloudflare git integration runs this on push. It reads wrangler.jsonc, so
+the "Output Directory" field in the dashboard is ignored.
+
+Expected build log line:
+  Read 65 files from the assets directory /opt/buildhome/repo/public
+If it says 152 files, or the path does not end in /public, stop the deploy.
+
+_archive/ holds the old _redirects and netlify.toml. Both were wrong for
+Cloudflare: _redirects used Netlify syntax, and Cloudflare Workers does not
+support domain-level (www to apex) redirects in that file at all. Safe to
+delete _archive whenever.
+
+WWW REDIRECT (dashboard, not a file)
+  Domain > Rules > Redirect Rules > Create
+    If:   Hostname equals www.mandnmasonryct.com
+    Then: Dynamic redirect
+          concat("https://mandnmasonryct.com", http.request.uri.path)
+          301, preserve query string
+  Needs a proxied DNS record for www or the rule never fires.
+  All canonical tags point at the bare domain.
+
+BEFORE GOING LIVE - three replacements
+1. PHONE. (203) 555-0147 is a placeholder (reserved fake-number range).
+   Replace it and the tel:+12035550147 links across public/.
+2. INSURANCE. Pages say "licensed and fully insured, certificate on request".
+   Swap in real liability limits once you have the COI.
+3. PROJECT COUNT. Pages say 27 years. The "200+ projects" figure was left out
+   because it contradicts the 1999 founding date. Add the real number.
 
 THE FORM
-The GoHighLevel survey (NdQLG01OU0jSOXUSEftG) is embedded in the "Get your
-free estimate" block at the bottom of all 31 pages. form_embed.js loads once
-per page, right before </body>, which is what auto-sizes the iframe height.
-Do not add a second copy of that script to a page.
-
-BEFORE GOING LIVE - three replacements left
-1. PHONE. (203) 555-0147 is a placeholder in the reserved fake-number range.
-   Find and replace it, and the tel:+12035550147 links, across all files.
-2. INSURANCE. Pages say "licensed and fully insured, certificate on request".
-   Swap in the real liability limits once you have the COI.
-3. PROJECT COUNT. Pages say 27 years. The "200+ projects" figure was left out
-   because it contradicts the founding date. Add the real number.
-
-STRUCTURE
-  index.html                    homepage
-  services/index.html           hub, links to all 16
-  services/<slug>/index.html    16 service pages
-  service-areas/index.html      hub, links to all 12
-  service-areas/<slug>/         12 town pages
-  images/                       29 photos plus the logo
-  404.html, sitemap.xml, robots.txt
-
-NAVIGATION
-- Services and Service Areas open on hover on desktop, and on tap under 1050px
-  where a Menu button appears.
-- Internal links point at index.html so the folder works by double-click.
-  Cloudflare Pages and Netlify both normalise /x/index.html to /x/ live, and
-  every canonical tag already declares the clean trailing-slash URL.
+GoHighLevel survey NdQLG01OU0jSOXUSEftG is on all 31 pages, with
+form_embed.js loaded once per page before </body>. Do not add a second copy.
