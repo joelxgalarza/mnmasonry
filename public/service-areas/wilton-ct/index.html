@@ -216,6 +216,32 @@
     .hero .cta{flex-direction:column}
   }
 
+  /* red call bar under the header */
+  .callbar{background:var(--accent);border-bottom:2px solid #000000}
+  .callbar-in{
+    display:flex;align-items:center;justify-content:center;gap:18px;
+    padding:14px 24px;text-decoration:none;color:#FFFFFF;
+    font-family:"Karla",sans-serif;font-size:20px;font-weight:800;
+    line-height:1.3;text-align:center;
+    transition:background .15s ease;
+  }
+  .callbar-in:hover,.callbar-in:focus-visible{background:#000000;color:#FFFFFF}
+  .callbar .cb-arrow{flex:none;width:26px;height:14px;fill:#FFFFFF;display:block}
+  .callbar .cb-flip{transform:scaleX(-1)}
+  .callbar .cb-num{text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+  .callbar .cb-short{display:none}
+  @media(max-width:860px){
+    .callbar-in{font-size:17px;gap:12px;padding:13px 14px}
+    .callbar .cb-arrow{width:20px;height:11px}
+    .callbar .cb-full{display:none}
+    .callbar .cb-short{display:inline}
+  }
+  @media(max-width:560px){
+    .callbar-in{font-size:15px;gap:7px;padding:12px 9px}
+    .callbar .cb-arrow{width:16px;height:9px}
+    .callbar .cb-num{white-space:nowrap}
+  }
+
   .legal{max-width:74ch}
   .legal h2{font-size:27px;margin:52px 0 16px}
   .legal h2:first-child{margin-top:0}
@@ -376,6 +402,14 @@
     <a class="btn" href="tel:+12035120750">(203) 512-0750</a>
   </div>
 </header>
+<div class="callbar">
+  <a class="callbar-in" href="tel:+12035120750" aria-label="Call M and N Masonry at (203) 512-0750">
+    <svg class="cb-arrow" viewBox="0 0 26 14" aria-hidden="true" focusable="false"><path d="M0 5 H14 V0 L26 7 L14 14 V9 H0 Z"/></svg>
+    <span class="cb-txt cb-full">Call Today! <span class="cb-num">(203) 512-0750</span> - 27 Years in Fairfield County - Same Day Callback</span>
+    <span class="cb-txt cb-short">Call <span class="cb-num">(203) 512-0750</span> - Same Day Callback</span>
+    <svg class="cb-arrow cb-flip" viewBox="0 0 26 14" aria-hidden="true" focusable="false"><path d="M0 5 H14 V0 L26 7 L14 14 V9 H0 Z"/></svg>
+  </a>
+</div>
 <div class="pagehero">
   <div class="wrap">
     <div class="crumb mono"><a href="../../index.html">Home</a> / <a href="../index.html">Service Areas</a> / Wilton, CT</div>
