@@ -15,9 +15,14 @@ Expected build log line:
 If it says 152 files, or the path does not end in /public, stop the deploy.
 
 _archive/ holds the old _redirects and netlify.toml. Both were wrong for
-Cloudflare: _redirects used Netlify syntax, and Cloudflare Workers does not
-support domain-level (www to apex) redirects in that file at all. Safe to
-delete _archive whenever.
+Cloudflare: that _redirects file used Netlify syntax, and Cloudflare Workers
+does not support domain-level (www to apex) redirects in that file at all.
+Safe to delete _archive whenever.
+
+public/_redirects is Workers static-asset syntax, not the archived Netlify
+file. It 301s /index.html and no-slash paths onto the trailing-slash URL.
+wrangler.jsonc sets html_handling to force-trailing-slash, so /services/
+returns 200 and /services or /services/index.html redirect there.
 
 WWW REDIRECT (dashboard, not a file)
   Domain > Rules > Redirect Rules > Create
